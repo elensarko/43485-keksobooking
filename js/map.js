@@ -49,6 +49,9 @@ var dictionary = {
   bungalo: 'Бунгало'
 };
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 var randomNumber = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
@@ -149,15 +152,17 @@ var createFragmentPins = function (arr) {
 };
 
 var similarCardTemplate = document.querySelector('#similar-card-template')
-  .content
-  .querySelector('.map__card');
+    .content
+    .querySelector('.map__card');
 
 var cardElement = similarCardTemplate.cloneNode(true);
-var container = cardElement.querySelector('.popup__photos');
-var templateImg = container.querySelector('.popup__photo').cloneNode(true);
-container.querySelector('.popup__photo').remove();
+var feature = cardElement.querySelectorAll('.popup__feature');
+var containerCardImg = cardElement.querySelector('.popup__photos');
+var templateImg = containerCardImg.querySelector('.popup__photo').cloneNode(true);
+containerCardImg.querySelector('.popup__photo').remove();
 
 var renderCard = function (arr) {
+  cardElement.classList.remove('hidden');
 
   cardElement.querySelector('.popup__avatar').src = arr.author.avatar;
   cardElement.querySelector('.popup__title').textContent = arr.offer.title;
@@ -167,29 +172,57 @@ var renderCard = function (arr) {
   cardElement.querySelector('.popup__text--capacity').textContent = arr.offer.rooms + ' комнаты для ' + arr.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после' + arr.offer.checkin + ', выезд до ' + arr.offer.checkout;
 
-  var feature = cardElement.querySelectorAll('.popup__feature');
-  for (var i = arr.offer.features.length; i < feature.length; i++) {
+  for (var i = 0; i < feature.length; i++) {
     feature[i].style = 'display: none;';
+  }
+
+  for (i = arr.offer.features.length; i < feature.length; i++) {
+    feature[i].style = 'display: inline-block;';
   }
 
   cardElement.querySelector('.popup__description').textContent = arr.offer.description;
 
-  container.innerHTML = '';
+  containerCardImg.innerHTML = '';
   for (i = 0; i < arr.offer.photos.length; i++) {
     var image = templateImg.cloneNode(true);
     image.src = arr.offer.photos[i];
-    container.appendChild(image);
+    containerCardImg.appendChild(image);
   }
+
+  var popupClose = cardElement.querySelector('.popup__close');
+
+  popupClose.addEventListener('click', function () {
+    closePopup();
+  });
+  document.addEventListener('keydown', onPopupEscPress);
+  popupClose.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      closePopup();
+    }
+  });
 
   return cardElement;
 };
 
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
+var closePopup = function () {
+  var popup = document.querySelector('.popup');
+  popup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
 var map = document.querySelector('.map');
+var selects = document.querySelectorAll('select');
 var activatePage = function () {
   map.classList.remove('map--faded');
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-  for (var i = 0; i < document.querySelectorAll('select').length; i++) {
-    document.querySelectorAll('select')[i].disabled = false;
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].disabled = false;
   }
   document.querySelector('fieldset').disabled = false;
   setAddressValues();
@@ -207,7 +240,7 @@ var setAddressValues = function () {
   } else {
     coordinatePinY += PIN_PROPORTIONS.mainPinHeight + PIN_PROPORTIONS.pointerHeight;
   }
-  inputAddress.value = coordinatePinX + ', ' + coordinatePinY;
+  inputAddress.value = Math.floor(coordinatePinX) + ', ' + Math.floor(coordinatePinY);
 };
 
 setAddressValues();
@@ -228,4 +261,3 @@ mapPins.addEventListener('click', function (evt) {
   }
   map.insertBefore(renderCard(OFFERS[button.dataset.index]), map.children[1]);
 });
-
