@@ -43,10 +43,22 @@ var PIN_PROPORTIONS = {
   pointerHeight: 22
 };
 var dictionary = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house: 'Дом',
-  bungalo: 'Бунгало'
+  palace: {
+    translate: 'Дворец',
+    minPrice: 10000
+  },
+  flat: {
+    translate: 'Квартира',
+    minPrice: 1000
+  },
+  house: {
+    translate: 'Дом',
+    minPrice: 5000
+  },
+  bungalo: {
+    translate: 'Лачуга',
+    minPrice: 0
+  }
 };
 
 var ESC_KEYCODE = 27;
@@ -152,8 +164,8 @@ var createFragmentPins = function (arr) {
 };
 
 var similarCardTemplate = document.querySelector('#similar-card-template')
-    .content
-    .querySelector('.map__card');
+  .content
+  .querySelector('.map__card');
 
 var cardElement = similarCardTemplate.cloneNode(true);
 var feature = cardElement.querySelectorAll('.popup__feature');
@@ -168,7 +180,7 @@ var renderCard = function (arr) {
   cardElement.querySelector('.popup__title').textContent = arr.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = arr.offer.address;
   cardElement.querySelector('.popup__text--price').textContent = arr.offer.price + '₽/ночь';
-  cardElement.querySelector('.popup__type').textContent = dictionary[arr.offer.type];
+  cardElement.querySelector('.popup__type').textContent = dictionary[arr.offer.type].translate;
   cardElement.querySelector('.popup__text--capacity').textContent = arr.offer.rooms + ' комнаты для ' + arr.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после' + arr.offer.checkin + ', выезд до ' + arr.offer.checkout;
 
@@ -289,18 +301,8 @@ inputTitle.addEventListener('input', function (evt) {
 var selectType = adForm.querySelector('select[name=type]');
 var inputPrice = adForm.querySelector('input[name=price]');
 var changeInputPrice = function () {
-  var inputMin = 0;
-  if (selectType.value === 'flat') {
-    inputMin = 1000;
-  } else if (selectType.value === 'house') {
-    inputMin = 5000;
-  } else if (selectType.value === 'palace') {
-    inputMin = 10000;
-  } else {
-    inputMin = 0;
-  }
-  inputPrice.setAttribute('min', inputMin);
-  inputPrice.placeholder = inputMin;
+  inputPrice.setAttribute('min', dictionary[selectType.value].minPrice);
+  inputPrice.placeholder = dictionary[selectType.value].minPrice;
 };
 
 selectType.addEventListener('change', function () {
@@ -309,11 +311,9 @@ selectType.addEventListener('change', function () {
 
 inputPrice.addEventListener('invalid', function () {
   if (inputPrice.validity.rangeOverflow) {
-    var max = inputPrice.getAttribute('max');
-    inputPrice.setCustomValidity('Цена привышает максимальное значение: ' + max);
+    inputPrice.setCustomValidity('Цена превышает максимальное значение: ' + inputPrice.max);
   } else if (inputPrice.validity.rangeUnderflow) {
-    var min = inputPrice.getAttribute('min');
-    inputPrice.setCustomValidity('Цена ниже минимального значения: ' + min);
+    inputPrice.setCustomValidity('Цена ниже минимального значения: ' + inputPrice.min);
   } else if (inputPrice.validity.valueMissing) {
     inputPrice.setCustomValidity('Обязательное поле');
   } else {
@@ -323,12 +323,10 @@ inputPrice.addEventListener('invalid', function () {
 
 inputPrice.addEventListener('input', function (evt) {
   var target = evt.target;
-  var min = inputPrice.getAttribute('min');
-  var max = inputPrice.getAttribute('max');
-  if (target.value < min) {
-    target.setCustomValidity('Цена ниже минимального значения: ' + min);
-  } else if (target.value > max) {
-    target.setCustomValidity('Цена привышает максимальное значение: ' + max);
+  if (target.value < inputPrice.min) {
+    target.setCustomValidity('Цена ниже минимального значения: ' + inputPrice.min);
+  } else if (target.value > inputPrice.max) {
+    target.setCustomValidity('Цена превышает максимальное значение: ' + inputPrice.max);
   } else {
     target.setCustomValidity('');
   }
