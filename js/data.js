@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.data = (function () {
   var OFFER_TITLE = [
     'Большая уютная квартира',
     'Маленькая неуютная квартира',
@@ -27,19 +27,16 @@
   var GUESTS_MIN = 1;
   var GUESTS_MAX = 10;
   var NUMBER_OF_CARDS = 8;
-  window.LOCATION_COORDINATES = {
-    xMin: 300,
-    xMax: 900,
-    yMin: 150,
-    yMax: 500
-  };
+
+  var locationsCoordinates = window.constants.LOCATION_COORDINATES;
+  var random = window.util.randomNumber;
 
   var renderArr = function () {
     var arr = [];
     for (var i = 0; i < NUMBER_OF_CARDS; i++) {
       var location = {
-        x: window.util.randomNumber(LOCATION_COORDINATES.xMin, LOCATION_COORDINATES.xMax),
-        y: window.util.randomNumber(LOCATION_COORDINATES.yMin, LOCATION_COORDINATES.yMax)
+        x: random(locationsCoordinates.xMin, locationsCoordinates.xMax),
+        y: random(locationsCoordinates.yMin, locationsCoordinates.yMax)
       };
 
       arr[i] = {
@@ -47,15 +44,15 @@
           avatar: 'img/avatars/user' + window.util.addZero(i + 1) + '.png'
         },
         offer: {
-          title: OFFER_TITLE[window.util.randomNumber(0, OFFER_TITLE.length - 1)],
+          title: OFFER_TITLE[random(0, OFFER_TITLE.length - 1)],
           address: location.x + ', ' + location.y,
-          price: window.util.randomNumber(PRICE_MIN, PRICE_MAX),
-          type: OFFER_TYPE[window.util.randomNumber(0, OFFER_TYPE.length - 1)],
-          rooms: window.util.randomNumber(ROOMS_MIN, ROOMS_MAX),
-          guests: window.util.randomNumber(GUESTS_MIN, GUESTS_MAX),
-          checkin: OFFER_CHECKIN[window.util.randomNumber(0, OFFER_CHECKIN.length - 1)],
-          checkout: OFFER_CHECKOUT[window.util.randomNumber(0, OFFER_CHECKOUT.length - 1)],
-          features: OFFER_FEATURES.slice(0, window.util.randomNumber(0, OFFER_FEATURES.length - 1)),
+          price: random(PRICE_MIN, PRICE_MAX),
+          type: OFFER_TYPE[random(0, OFFER_TYPE.length - 1)],
+          rooms: random(ROOMS_MIN, ROOMS_MAX),
+          guests: random(GUESTS_MIN, GUESTS_MAX),
+          checkin: OFFER_CHECKIN[random(0, OFFER_CHECKIN.length - 1)],
+          checkout: OFFER_CHECKOUT[random(0, OFFER_CHECKOUT.length - 1)],
+          features: OFFER_FEATURES.slice(0, random(0, OFFER_FEATURES.length - 1)),
           description: '',
           photos: window.util.shuffle(window.util.copyArr(OFFER_PHOTOS))
         },
@@ -64,5 +61,8 @@
     }
     return arr;
   };
-  window.OFFERS = renderArr();
+
+  return {
+    OFFERS: renderArr()
+  };
 })();

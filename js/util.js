@@ -35,7 +35,7 @@ window.util = (function () {
     },
     shuffle: function (arr) {
       for (var j = 0; j < arr.length; j++) {
-        var k = window.util.randomNumber(0, arr.length - 1);
+        var k = this.randomNumber(0, arr.length - 1);
         window.util.changeItem(arr, j, k);
       }
       return arr;

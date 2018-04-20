@@ -1,10 +1,10 @@
 'use strict';
 
 (function () {
-  window.map = document.querySelector('.map');
-  window.mapPinMain = map.querySelector('.map__pin--main');
+  var map = document.querySelector('.map');
+  var mapPinMain = map.querySelector('.map__pin--main');
 
-  mapPinMain.addEventListener('mousedown', activatePage);
+  mapPinMain.addEventListener('mousedown', window.activatePage.activate);
 
   var mapPins = map.querySelector('.map__pins');
   mapPins.addEventListener('click', function (evt) {
@@ -18,7 +18,7 @@
     if (typeof button.dataset.index === 'undefined') {
       return;
     }
-    map.insertBefore(renderCard(OFFERS[button.dataset.index]), map.children[1]);
+    map.insertBefore(window.card.renderCard(window.data.OFFERS[button.dataset.index]), map.children[1]);
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
@@ -45,17 +45,22 @@
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
 
-      if (mapPinMain.offsetTop - shift.y < LOCATION_COORDINATES.yMin - PIN_PROPORTIONS.mainPinHeight - PIN_PROPORTIONS.pointerHeight) {
-        mapPinMain.style.top = LOCATION_COORDINATES.yMin - PIN_PROPORTIONS.mainPinHeight - PIN_PROPORTIONS.pointerHeight + 'px';
+      var coordinates = window.constants.LOCATION_COORDINATES;
+      var pinHeight = window.constants.PIN_PROPORTIONS.mainPinHeight;
+      var pinWidth = window.constants.PIN_PROPORTIONS.mainPinWidth;
+      var pointerHeight = window.constants.PIN_PROPORTIONS.pointerHeight;
+
+      if (mapPinMain.offsetTop - shift.y < coordinates.yMin - pinHeight - pointerHeight) {
+        mapPinMain.style.top = coordinates.yMin - pinHeight - pointerHeight + 'px';
       }
-      if (mapPinMain.offsetTop - shift.y > LOCATION_COORDINATES.yMax + PIN_PROPORTIONS.mainPinHeight / 2 + PIN_PROPORTIONS.pointerHeight) {
-        mapPinMain.style.top = LOCATION_COORDINATES.yMax + PIN_PROPORTIONS.mainPinHeight / 2 + PIN_PROPORTIONS.pointerHeight + 'px';
+      if (mapPinMain.offsetTop - shift.y > coordinates.yMax + pinHeight / 2 + pointerHeight) {
+        mapPinMain.style.top = coordinates.yMax + pinHeight / 2 + pointerHeight + 'px';
       }
-      if (mapPinMain.offsetLeft - shift.x < LOCATION_COORDINATES.xMin - PIN_PROPORTIONS.mainPinWidth / 2) {
-        mapPinMain.style.left = LOCATION_COORDINATES.xMin - PIN_PROPORTIONS.mainPinWidth / 2 + 'px';
+      if (mapPinMain.offsetLeft - shift.x < coordinates.xMin - pinWidth / 2) {
+        mapPinMain.style.left = coordinates.xMin - pinWidth / 2 + 'px';
       }
-      if (mapPinMain.offsetLeft - shift.x > LOCATION_COORDINATES.xMax - PIN_PROPORTIONS.mainPinWidth / 2) {
-        mapPinMain.style.left = LOCATION_COORDINATES.xMax - PIN_PROPORTIONS.mainPinWidth / 2 + 'px';
+      if (mapPinMain.offsetLeft - shift.x > coordinates.xMax - pinWidth / 2) {
+        mapPinMain.style.left = coordinates.xMax - pinWidth / 2 + 'px';
       }
     };
 
@@ -64,7 +69,7 @@
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      setAddressValues();
+      window.setAddressValues();
     };
 
     document.addEventListener('mousemove', onMouseMove);

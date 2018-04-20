@@ -9,18 +9,23 @@
     '100': ['0']
   };
 
+  var pinProportions = window.constants.PIN_PROPORTIONS;
+  var map = document.querySelector('.map');
+  var mapPinMain = map.querySelector('.map__pin--main');
   var inputAddress = document.querySelector('input[name=address]');
+
   window.setAddressValues = function () {
-    var coordinatePinX = mapPinMain.offsetLeft + PIN_PROPORTIONS.mainPinWidth / 2;
+    var coordinatePinX = mapPinMain.offsetLeft + pinProportions.mainPinWidth / 2;
     var coordinatePinY = mapPinMain.offsetTop;
     if (map.classList.contains('map--faded')) {
-      coordinatePinY += PIN_PROPORTIONS.mainPinHeight / 2;
+      coordinatePinY += pinProportions.mainPinHeight / 2;
     } else {
-      coordinatePinY += PIN_PROPORTIONS.mainPinHeight + PIN_PROPORTIONS.pointerHeight;
+      coordinatePinY += pinProportions.mainPinHeight + pinProportions.pointerHeight;
     }
     inputAddress.value = Math.floor(coordinatePinX) + ', ' + Math.floor(coordinatePinY);
   };
-  setAddressValues();
+
+  window.setAddressValues();
 
   var adForm = document.querySelector('.ad-form');
   var inputTitle = adForm.querySelector('input[name=title]');
@@ -46,8 +51,10 @@
     }
   });
 
+  var dictionary = window.constants.DICTIONARY;
   var selectType = adForm.querySelector('select[name=type]');
   var inputPrice = adForm.querySelector('input[name=price]');
+
   var changeInputPrice = function () {
     inputPrice.setAttribute('min', dictionary[selectType.value].minPrice);
     inputPrice.placeholder = dictionary[selectType.value].minPrice;
