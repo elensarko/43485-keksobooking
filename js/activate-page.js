@@ -1,11 +1,11 @@
 'use strict';
 
-window.activatePage = (function () {
+(function () {
   var selects = document.querySelectorAll('select');
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
 
-  return {
+  window.activatePage = {
     activate: function () {
       map.classList.remove('map--faded');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
@@ -17,5 +17,5 @@ window.activatePage = (function () {
       window.pin.createFragmentPins(window.data.OFFERS);
       mapPinMain.removeEventListener('mousedown', window.activatePage.activate);
     }
-};
+  };
 })();

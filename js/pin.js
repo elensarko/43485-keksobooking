@@ -1,6 +1,6 @@
 'use strict';
 
-window.pin = (function () {
+(function () {
   var pinProportions = window.constants.PIN_PROPORTIONS;
 
   var makePinButton = function (tagName, className, type, pinX, pinY, index) {
@@ -33,7 +33,7 @@ window.pin = (function () {
 
   var pinList = document.querySelector('.map__pins');
 
-  return {
+  window.pin = {
     createFragmentPins: function (arr) {
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < arr.length; i++) {

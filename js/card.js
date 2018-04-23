@@ -1,6 +1,6 @@
 'use strict';
 
-window.card = (function () {
+(function () {
 
 
   var similarCardTemplate = document.querySelector('#similar-card-template')
@@ -24,7 +24,7 @@ window.card = (function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  return {
+  window.card =  {
     renderCard: function (arr) {
       cardElement.classList.remove('hidden');
 

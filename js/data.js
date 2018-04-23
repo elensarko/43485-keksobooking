@@ -1,6 +1,6 @@
 'use strict';
 
-window.data = (function () {
+(function () {
   var OFFER_TITLE = [
     'Большая уютная квартира',
     'Маленькая неуютная квартира',
@@ -62,7 +62,7 @@ window.data = (function () {
     return arr;
   };
 
-  return {
+  window.data = {
     OFFERS: renderArr()
   };
 })();
