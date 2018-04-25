@@ -4,7 +4,7 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
 
-  window.backend.load(function (response) {
+  window.backend.request('https://js.dump.academy/keksobooking/data', 'GET', function (response) {
     window.data = {
       OFFERS: response
     };
