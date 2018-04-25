@@ -4,21 +4,27 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
 
-  mapPinMain.addEventListener('mousedown', window.activatePage.activate);
+  window.backend.request('https://js.dump.academy/keksobooking/data', 'GET', function (response) {
+    window.data = {
+      OFFERS: response
+    };
+    mapPinMain.addEventListener('mousedown', window.activatePage.activate);
+  });
 
   var mapPins = map.querySelector('.map__pins');
   mapPins.addEventListener('click', function (evt) {
-    var button = evt.target;
-    while (button && button.tagName.toLowerCase() !== 'button') {
-      button = evt.target.parentNode;
+    var element = evt.target;
+    var i = 0;
+    while (element && element.tagName !== 'BUTTON') {
+      element = element.parentNode;
     }
-    if (!button) {
+    if (!element) {
       return;
     }
-    if (typeof button.dataset.index === 'undefined') {
+    if (typeof element.dataset.index === 'undefined') {
       return;
     }
-    map.insertBefore(window.card.renderCard(window.data.OFFERS[button.dataset.index]), map.children[1]);
+    map.insertBefore(window.card.renderCard(window.data.OFFERS[element.dataset.index]), map.children[1]);
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {
