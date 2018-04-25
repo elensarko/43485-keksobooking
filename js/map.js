@@ -4,7 +4,12 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
 
-  mapPinMain.addEventListener('mousedown', window.activatePage.activate);
+  window.backend.load(function (response) {
+    window.data = {
+      OFFERS: response
+    };
+    mapPinMain.addEventListener('mousedown', window.activatePage.activate);
+  });
 
   var mapPins = map.querySelector('.map__pins');
   mapPins.addEventListener('click', function (evt) {
