@@ -3,8 +3,8 @@
 (function () {
   window.constants = {
     LOCATION_COORDINATES: {
-      xMin: 300,
-      xMax: 900,
+      xMin: 0,
+      xMax: 1200,
       yMin: 150,
       yMax: 500
     },
@@ -18,7 +18,7 @@
       pointerWidth: 10,
       pointerHeight: 22
     },
-    DICTIONARY: {
+    Dictionary: {
       palace: {
         translate: 'Дворец',
         minPrice: 10000

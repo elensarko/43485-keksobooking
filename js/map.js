@@ -8,13 +8,12 @@
     window.data = {
       OFFERS: response
     };
-    mapPinMain.addEventListener('mousedown', window.activatePage.activate);
+    mapPinMain.addEventListener('mousedown', window.page.activate);
   });
 
   var mapPins = map.querySelector('.map__pins');
   mapPins.addEventListener('click', function (evt) {
     var element = evt.target;
-    var i = 0;
     while (element && element.tagName !== 'BUTTON') {
       element = element.parentNode;
     }
@@ -75,7 +74,7 @@
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      window.setAddressValues();
+      window.form.setAddressValues();
     };
 
     document.addEventListener('mousemove', onMouseMove);

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var NUMBER_OF_CARDS = 8;
+  var NUMBER_OF_CARDS = 5;
   var pinProportions = window.constants.PIN_PROPORTIONS;
 
   var makePinButton = function (tagName, className, type, pinX, pinY, index) {
@@ -29,18 +29,33 @@
     var pinButton = makePinButton('button', 'map__pin', 'button', arr.location.x, arr.location.y, i);
     var pinImg = makeImage(arr.author.avatar, arr.offer.title, pinProportions.imageWidth, pinProportions.imageHeight);
     pinButton.appendChild(pinImg);
+    if (i >= NUMBER_OF_CARDS) {
+      pinButton.style.display = 'none';
+    }
     return pinButton;
   };
 
   var pinList = document.querySelector('.map__pins');
 
   window.pin = {
-    createFragmentPins: function (arr) {
+    createPins: function (arr) {
       var fragment = document.createDocumentFragment();
-      for (var i = 0; i < NUMBER_OF_CARDS; i++) {
+      for (var i = 0; i < arr.length; i++) {
         fragment.appendChild(renderPin(arr[i], i));
       }
       pinList.appendChild(fragment);
+    },
+    removePins: function () {
+      var mapPins = document.querySelector('.map__pins');
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      [].forEach.call(pins, function (pin) {
+        mapPins.removeChild(pin);
+      });
+    },
+    returnMainPin: function () {
+      var mainPin = document.querySelector('.map__pin--main');
+      mainPin.style = 'left: 570px; top: 375px;';
+      window.form.setAddressValues();
     }
   };
 })();
