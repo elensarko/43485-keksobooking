@@ -25,11 +25,11 @@
     return element;
   };
 
-  var renderPin = function (arr, i) {
-    var pinButton = makePinButton('button', 'map__pin', 'button', arr.location.x, arr.location.y, i);
-    var pinImg = makeImage(arr.author.avatar, arr.offer.title, pinProportions.imageWidth, pinProportions.imageHeight);
+  var renderPin = function (offer) {
+    var pinButton = makePinButton('button', 'map__pin', 'button', offer.location.x, offer.location.y, offer.index);
+    var pinImg = makeImage(offer.author.avatar, offer.offer.title, pinProportions.imageWidth, pinProportions.imageHeight);
     pinButton.appendChild(pinImg);
-    if (i >= NUMBER_OF_CARDS) {
+    if (offer.index >= NUMBER_OF_CARDS) {
       pinButton.style.display = 'none';
     }
     return pinButton;
@@ -38,10 +38,10 @@
   var pinList = document.querySelector('.map__pins');
 
   window.pin = {
-    createPins: function (arr) {
+    createPins: function (offers) {
       var fragment = document.createDocumentFragment();
-      for (var i = 0; i < arr.length; i++) {
-        fragment.appendChild(renderPin(arr[i], i));
+      for (var i = 0; i < offers.length; i++) {
+        fragment.appendChild(renderPin(offers[i]));
       }
       pinList.appendChild(fragment);
     },

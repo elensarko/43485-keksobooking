@@ -65,10 +65,10 @@
 
   inputPrice.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value < inputPrice.min) {
+    if (Number(target.value) < inputPrice.min) {
       target.setCustomValidity('Цена ниже минимального значения: ' + inputPrice.min);
-    } else if (target.value > inputPrice.max) {
-      target.setCustomValidity('Цена превышает максимальное значение: ' + inputPrice.max);
+    } else if (Number(target.value) > inputPrice.max) {
+      target.setCustomValidity('Цена ' + target.value + ' превышает максимальное значение: ' + inputPrice.max);
     } else {
       target.setCustomValidity('');
     }
@@ -123,7 +123,7 @@
     evt.preventDefault();
   });
 
-  var adFormReset = adForm.querySelector('.ad-form__reset')
+  var adFormReset = adForm.querySelector('.ad-form__reset');
   adFormReset.addEventListener('click', function (evt) {
     evt.preventDefault();
     window.page.deactivate();

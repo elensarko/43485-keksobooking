@@ -5,6 +5,9 @@
   var mapPinMain = map.querySelector('.map__pin--main');
 
   window.backend.request('https://js.dump.academy/keksobooking/data', 'GET', function (response) {
+    response.forEach(function (offer, index) {
+      offer.index = index;
+    });
     window.data = {
       OFFERS: response
     };
