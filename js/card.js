@@ -12,6 +12,16 @@
   var containerCardImg = cardElement.querySelector('.popup__photos');
   var templateImg = containerCardImg.querySelector('.popup__photo').cloneNode(true);
 
+  for (var i = 0; i < features.length; i++) {
+    var classListFeature = features[i].classList;
+    for (var j = 0; j < classListFeature.length; j++) {
+      var index = classListFeature[j].indexOf('--');
+      if (index !== -1) {
+        features[i].dataset.feature = classListFeature[j].slice(index + 2);
+      }
+    }
+  }
+
   containerCardImg.querySelector('.popup__photo').remove();
 
   var onPopupEscPress = function (evt) {
@@ -35,15 +45,6 @@
       cardElement.querySelector('.popup__type').textContent = window.constants.Dictionary[arr.offer.type].translate;
       cardElement.querySelector('.popup__text--capacity').textContent = arr.offer.rooms + ' комнаты для ' + arr.offer.guests + ' гостей';
       cardElement.querySelector('.popup__text--time').textContent = 'Заезд после' + arr.offer.checkin + ', выезд до ' + arr.offer.checkout;
-
-      for (var i = 0; i < features.length; i++) {
-        var classListFeature = features[i].classList;
-        for (var j = 0; j < classListFeature.length; j++) {
-          if (classListFeature[j].indexOf('--') !== -1) {
-            features[i].dataset.feature = classListFeature[j].slice(classListFeature[j].indexOf('--') + 2);
-          }
-        }
-      }
 
       for (i = 0; i < features.length; i++) {
         if (arr.offer.features.indexOf(features[i].dataset.feature) !== -1) {
