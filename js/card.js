@@ -35,7 +35,7 @@
   };
 
   window.card = {
-    renderCard: function (arr) {
+    render: function (arr) {
       cardElement.classList.remove('hidden');
 
       cardElement.querySelector('.popup__avatar').src = arr.author.avatar;

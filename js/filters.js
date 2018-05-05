@@ -16,7 +16,6 @@
 
   var updatePins = function (offers) {
     var filteredOffers = offers.slice();
-
     var selectorFilters = mapFilters.querySelectorAll('select');
     var featuresFilters = mapFilters.querySelectorAll('input[type=checkbox]:checked');
 

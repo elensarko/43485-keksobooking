@@ -4,15 +4,7 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
 
-  window.backend.request('https://js.dump.academy/keksobooking/data', 'GET', function (response) {
-    response.forEach(function (offer, index) {
-      offer.index = index;
-    });
-    window.data = {
-      OFFERS: response
-    };
-    mapPinMain.addEventListener('mousedown', window.page.activate);
-  });
+  mapPinMain.addEventListener('mousedown', window.page.activate);
 
   var mapPins = map.querySelector('.map__pins');
   mapPins.addEventListener('click', function (evt) {
@@ -26,7 +18,7 @@
     if (typeof element.dataset.index === 'undefined') {
       return;
     }
-    map.insertBefore(window.card.renderCard(window.data.OFFERS[element.dataset.index]), map.children[1]);
+    map.insertBefore(window.card.render(window.data.OFFERS[element.dataset.index]), map.children[1]);
   });
 
   mapPinMain.addEventListener('mousedown', function (evt) {

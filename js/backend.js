@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var TIMEOUT = 10000; // 10s
+  var TIMEOUT = 10000;
   var STATUS_SUCCESS = 200;
 
   window.backend = {

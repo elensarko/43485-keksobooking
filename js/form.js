@@ -13,7 +13,6 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var inputAddress = document.querySelector('input[name=address]');
-
   var adForm = document.querySelector('.ad-form');
   var inputTitle = adForm.querySelector('input[name=title]');
 
@@ -124,11 +123,7 @@
   });
 
   var adFormReset = adForm.querySelector('.ad-form__reset');
-  adFormReset.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    window.page.deactivate();
-    mapPinMain.addEventListener('mousedown', window.page.activate);
-  });
+  adFormReset.addEventListener('click', window.page.deactivate);
 
   window.form = {
     setAddressValues: function () {
