@@ -12,12 +12,12 @@
       map.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
 
-      for (var i = 0; i < selects.length; i++) {
-        selects[i].disabled = false;
-      }
-      for (i = 0; i < fieldset.length; i++) {
-        fieldset[i].disabled = false;
-      }
+      [].forEach.call(selects, function (item) {
+        item.disabled = false;
+      });
+      [].forEach.call(fieldset, function (item) {
+        item.disabled = false;
+      });
 
       window.form.setAddressValues();
 
