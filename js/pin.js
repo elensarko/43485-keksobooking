@@ -40,10 +40,8 @@
     createPins: function (offers) {
       var fragment = document.createDocumentFragment();
 
-      [].forEach.call(offers, function (item, index) {
-        if (index < NUMBER_OF_CARDS) {
-          fragment.appendChild(renderPin(item));
-        }
+      offers.slice(0, NUMBER_OF_CARDS).forEach(function (offer) {
+        fragment.appendChild(renderPin(offer));
       });
 
       pinList.appendChild(fragment);
