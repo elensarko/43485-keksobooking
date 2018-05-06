@@ -4,23 +4,13 @@
 
 
   var similarCardTemplate = document.querySelector('#similar-card-template')
-    .content
-    .querySelector('.map__card');
+      .content
+      .querySelector('.map__card');
 
   var cardElement = similarCardTemplate.cloneNode(true);
   var features = cardElement.querySelectorAll('.popup__feature');
   var containerCardImg = cardElement.querySelector('.popup__photos');
   var templateImg = containerCardImg.querySelector('.popup__photo').cloneNode(true);
-  //
-  // [].forEach.call(features, function (feature) {
-  //   var classListFeature = feature.classList;
-  //   [].forEach.call(classListFeature, function (classFeature) {
-  //     var index = classFeature.indexOf('--');
-  //     if (index !== -1) {
-  //       feature.dataset.feature = classFeature.slice(index + 2);
-  //     }
-  //   });
-  // });
 
   containerCardImg.querySelector('.popup__photo').remove();
 
