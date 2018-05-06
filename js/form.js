@@ -94,8 +94,8 @@
   var changeSelectCapacity = function () {
     if (selectCapacity.options.length > 0) {
       [].forEach.call(selectCapacity.options, function (item) {
-        item.selected = (ROOMS_CAPACITY[selectRooms.value][0] === item.value) ? true : false;
-        item.disabled = (ROOMS_CAPACITY[selectRooms.value].indexOf(item.value) >= 0) ? false : true;
+        item.selected = ROOMS_CAPACITY[selectRooms.value][0] === item.value;
+        item.disabled = ROOMS_CAPACITY[selectRooms.value].indexOf(item.value) === -1;
       });
     }
   };

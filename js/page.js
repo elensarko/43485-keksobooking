@@ -38,16 +38,16 @@
 
       adForm.classList.add('ad-form--disabled');
 
-      for (var i = 0; i < selects.length; i++) {
-        selects[i].disabled = true;
-      }
-      for (i = 0; i < fieldset.length; i++) {
-        fieldset[i].disabled = true;
-      }
+      [].forEach.call(selects, function (item) {
+        item.disabled = true;
+      });
+      [].forEach.call(fieldset, function (item) {
+        item.disabled = true;
+      });
 
       window.card.closePopup();
       window.pin.removePins();
-      window.pin.returnMainPin();
+      window.pin.resetMainPin();
       map.classList.add('map--faded');
       window.form.setAddressValues();
 

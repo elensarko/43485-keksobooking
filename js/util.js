@@ -17,7 +17,7 @@
         action();
       }
     },
-    debounce: function (fun, interval) {
+    debounce: function (func, interval) {
       var lastTimeout = null;
 
       return function () {
@@ -26,7 +26,7 @@
           window.clearTimeout(lastTimeout);
         }
         lastTimeout = window.setTimeout(function () {
-          fun.apply(null, args);
+          func.apply(null, args);
         }, interval);
       };
     }

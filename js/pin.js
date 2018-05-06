@@ -39,15 +39,13 @@
   window.pin = {
     createPins: function (offers) {
       var fragment = document.createDocumentFragment();
-      if (offers.length > NUMBER_OF_CARDS) {
-        for (var i = 0; i < 5; i++) {
-          fragment.appendChild(renderPin(offers[i]));
+
+      [].forEach.call(offers, function (item, index) {
+        if (index < NUMBER_OF_CARDS) {
+          fragment.appendChild(renderPin(item));
         }
-      } else {
-        for (i = 0; i < offers.length; i++) {
-          fragment.appendChild(renderPin(offers[i]));
-        }
-      }
+      });
+
       pinList.appendChild(fragment);
     },
     removePins: function () {
@@ -57,7 +55,7 @@
         mapPins.removeChild(pin);
       });
     },
-    returnMainPin: function () {
+    resetMainPin: function () {
       mainPin.style = startMainPinPosition;
     }
   };
