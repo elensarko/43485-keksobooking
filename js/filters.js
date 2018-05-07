@@ -6,18 +6,42 @@
     high: 50000
   };
 
-  var mapFilters = document.querySelector('.map__filters');
+  var mapFiltersElement = document.querySelector('.map__filters');
 
-  mapFilters.addEventListener('change', function () {
-    window.pin.removePins();
+  mapFiltersElement.addEventListener('change', function () {
+    window.pin.remove();
     window.card.closePopup();
     window.filters.updatePins(window.data.OFFERS);
   });
 
+  var filterByValue = function (filteredOffers, element, property) {
+    return filteredOffers.filter(function (offerData) {
+      return offerData.offer[property].toString() === element.value;
+    });
+  };
+
+  var filterByPrice = function (filteredOffers, priceFilter) {
+    return filteredOffers.filter(function (offerData) {
+
+      var priceFilterValues = {
+        'middle': offerData.offer.price >= PRICES_TO_COMPARE.low && offerData.offer.price < PRICES_TO_COMPARE.high,
+        'low': offerData.offer.price < PRICES_TO_COMPARE.low,
+        'high': offerData.offer.price >= PRICES_TO_COMPARE.high
+      };
+      return priceFilterValues[priceFilter.value];
+    });
+  };
+
+  var filterByFeatures = function (filteredOffers, item) {
+    return filteredOffers.filter(function (offerData) {
+      return offerData.offer.features.indexOf(item.value) >= 0;
+    });
+  };
+
   var updatePins = function (offers) {
     var filteredOffers = offers.slice();
-    var selectorFilters = mapFilters.querySelectorAll('select');
-    var featuresFilters = mapFilters.querySelectorAll('input[type=checkbox]:checked');
+    var selectorFilterElements = mapFiltersElement.querySelectorAll('select');
+    var featuresFilterElements = mapFiltersElement.querySelectorAll('input[type=checkbox]:checked');
 
     var FilterRules = {
       'housing-type': 'type',
@@ -25,50 +49,23 @@
       'housing-guests': 'guests'
     };
 
-    var filterByValue = function (element, property) {
-      return filteredOffers.filter(function (offerData) {
-        return offerData.offer[property].toString() === element.value;
-      });
-    };
-
-    var filterByPrice = function (priceFilter) {
-      return filteredOffers.filter(function (offerData) {
-
-        var priceFilterValues = {
-          'middle': offerData.offer.price >= PRICES_TO_COMPARE.low && offerData.offer.price < PRICES_TO_COMPARE.high,
-          'low': offerData.offer.price < PRICES_TO_COMPARE.low,
-          'high': offerData.offer.price >= PRICES_TO_COMPARE.high
-        };
-        return priceFilterValues[priceFilter.value];
-      });
-    };
-
-    var filterByFeatures = function (item) {
-      return filteredOffers.filter(function (offerData) {
-        return offerData.offer.features.indexOf(item.value) >= 0;
-      });
-    };
-
-    if (selectorFilters.length !== null) {
-      [].forEach.call(selectorFilters, function (item) {
-        if (item.value !== 'any') {
-          if (item.id !== 'housing-price') {
-            filteredOffers = filterByValue(item, FilterRules[item.id]);
-          } else {
-            filteredOffers = filterByPrice(item);
-          }
+    if (selectorFilterElements.length !== null) {
+      [].forEach.call(selectorFilterElements, function (item) {
+        if (item.value === 'any') {
+          return;
         }
+        filteredOffers = (item.id !== 'housing-price') ? filterByValue(filteredOffers, item, FilterRules[item.id]) : filterByPrice(filteredOffers, item);
       });
     }
 
-    if (featuresFilters !== null) {
-      [].forEach.call(featuresFilters, function (item) {
-        filteredOffers = filterByFeatures(item);
+    if (featuresFilterElements !== null) {
+      [].forEach.call(featuresFilterElements, function (item) {
+        filteredOffers = filterByFeatures(filteredOffers, item);
       });
     }
 
     if (filteredOffers.length) {
-      window.pin.createPins(filteredOffers);
+      window.pin.create(filteredOffers);
     }
   };
 

@@ -1,23 +1,26 @@
 'use strict';
 
 (function () {
-  var selects = document.querySelectorAll('select');
-  var fieldset = document.querySelectorAll('fieldset');
-  var map = document.querySelector('.map');
-  var mapPinMain = map.querySelector('.map__pin--main');
+  var selectElements = document.querySelectorAll('select');
+  var fieldsetElements = document.querySelectorAll('fieldset');
+  var mapElement = document.querySelector('.map');
+  var mapPinMainElement = mapElement.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
+  var adFormResetElement = adForm.querySelector('.ad-form__reset');
+
+  var setDisabledValue = function (element, value) {
+    [].forEach.call(element, function (item) {
+      item.disabled = value;
+    });
+  };
 
   window.page = {
     activate: function () {
-      map.classList.remove('map--faded');
+      mapElement.classList.remove('map--faded');
       adForm.classList.remove('ad-form--disabled');
 
-      [].forEach.call(selects, function (item) {
-        item.disabled = false;
-      });
-      [].forEach.call(fieldset, function (item) {
-        item.disabled = false;
-      });
+      setDisabledValue(selectElements, false);
+      setDisabledValue(fieldsetElements, false);
 
       window.form.setAddressValues();
 
@@ -28,32 +31,28 @@
         window.data = {
           OFFERS: response
         };
-        window.pin.createPins(window.data.OFFERS);
+        window.pin.create(window.data.OFFERS);
       });
 
-      mapPinMain.removeEventListener('mousedown', window.page.activate);
+      adFormResetElement.addEventListener('click', window.page.deactivate);
+      mapPinMainElement.removeEventListener('mousedown', window.page.activate);
     },
     deactivate: function () {
-      window.form.resetAdForm();
+      window.form.reset();
 
       adForm.classList.add('ad-form--disabled');
 
-      [].forEach.call(selects, function (item) {
-        item.disabled = true;
-      });
-      [].forEach.call(fieldset, function (item) {
-        item.disabled = true;
-      });
+      setDisabledValue(selectElements, true);
+      setDisabledValue(fieldsetElements, true);
 
       window.card.closePopup();
-      window.pin.removePins();
-      window.pin.resetMainPin();
-      map.classList.add('map--faded');
+      window.pin.remove();
+      window.pin.reset();
+      mapElement.classList.add('map--faded');
       window.form.setAddressValues();
 
-      var adFormReset = adForm.querySelector('.ad-form__reset');
-      adFormReset.removeEventListener('click', window.page.deactivate);
-      mapPinMain.addEventListener('mousedown', window.page.activate);
+      adFormResetElement.removeEventListener('click', window.page.deactivate);
+      mapPinMainElement.addEventListener('mousedown', window.page.activate);
     }
   };
 })();

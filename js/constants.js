@@ -10,7 +10,7 @@
     },
     PIN_PROPORTIONS: {
       width: 50,
-      heading: 70,
+      height: 70,
       imageWidth: 40,
       imageHeight: 40,
       mainPinWidth: 65,

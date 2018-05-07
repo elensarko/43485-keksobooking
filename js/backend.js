@@ -6,7 +6,7 @@
 
   window.backend = {
     request: function (url, type, onLoad, onError, data) {
-      var URL = url;
+      var uniformResourceLocator = url;
       var xhr = new XMLHttpRequest();
       xhr.responseType = 'json';
 
@@ -28,7 +28,7 @@
 
       xhr.timeout = TIMEOUT;
 
-      xhr.open(type, URL);
+      xhr.open(type, uniformResourceLocator);
       xhr.send(data);
     }
   };

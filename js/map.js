@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
-  var map = document.querySelector('.map');
-  var mapPinMain = map.querySelector('.map__pin--main');
+  var mapElement = document.querySelector('.map');
+  var mapPinMainElement = mapElement.querySelector('.map__pin--main');
 
-  mapPinMain.addEventListener('mousedown', window.page.activate);
+  mapPinMainElement.addEventListener('mousedown', window.page.activate);
 
-  var mapPins = map.querySelector('.map__pins');
-  mapPins.addEventListener('click', function (evt) {
+  var mapPinsElement = mapElement.querySelector('.map__pins');
+  mapPinsElement.addEventListener('click', function (evt) {
     var element = evt.target;
     while (element && element.tagName !== 'BUTTON') {
       element = element.parentNode;
@@ -18,10 +18,10 @@
     if (typeof element.dataset.index === 'undefined') {
       return;
     }
-    map.insertBefore(window.card.render(window.data.OFFERS[element.dataset.index]), map.children[1]);
+    mapElement.insertBefore(window.card.render(window.data.OFFERS[element.dataset.index]), mapElement.children[1]);
   });
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
+  mapPinMainElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -29,12 +29,32 @@
       y: evt.clientY
     };
 
+    var checkBoundaries = function (shift) {
+      var coordinates = window.constants.LOCATION_COORDINATES;
+      var pinHeight = window.constants.PIN_PROPORTIONS.mainPinHeight;
+      var pinWidth = window.constants.PIN_PROPORTIONS.mainPinWidth;
+      var pointerHeight = window.constants.PIN_PROPORTIONS.pointerHeight;
+
+      if (mapPinMainElement.offsetTop + shift.y + pinHeight + pointerHeight <= coordinates.yMin && shift.y < 0) {
+        mapPinMainElement.style.top = coordinates.yMin - pinHeight - pointerHeight + 'px';
+      }
+      if (mapPinMainElement.offsetTop + shift.y + pinHeight + pointerHeight >= coordinates.yMax && shift.y > 0) {
+        mapPinMainElement.style.top = coordinates.yMax - pinHeight - pointerHeight + 'px';
+      }
+      if (mapPinMainElement.offsetLeft + shift.x + pinWidth / 2 <= coordinates.xMin && shift.x < 0) {
+        mapPinMainElement.style.left = coordinates.xMin - pinWidth / 2 + 'px';
+      }
+      if (mapPinMainElement.offsetLeft + shift.x + pinWidth / 2 >= coordinates.xMax && shift.x > 0) {
+        mapPinMainElement.style.left = coordinates.xMax - pinWidth / 2 + 'px';
+      }
+    };
+
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+        x: moveEvt.clientX - startCoords.x,
+        y: moveEvt.clientY - startCoords.y
       };
 
       startCoords = {
@@ -42,26 +62,10 @@
         y: moveEvt.clientY
       };
 
-      mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
-      mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      mapPinMainElement.style.top = (mapPinMainElement.offsetTop + shift.y) + 'px';
+      mapPinMainElement.style.left = (mapPinMainElement.offsetLeft + shift.x) + 'px';
 
-      var coordinates = window.constants.LOCATION_COORDINATES;
-      var pinHeight = window.constants.PIN_PROPORTIONS.mainPinHeight;
-      var pinWidth = window.constants.PIN_PROPORTIONS.mainPinWidth;
-      var pointerHeight = window.constants.PIN_PROPORTIONS.pointerHeight;
-
-      if (mapPinMain.offsetTop - shift.y < coordinates.yMin - pinHeight - pointerHeight) {
-        mapPinMain.style.top = coordinates.yMin - pinHeight - pointerHeight + 'px';
-      }
-      if (mapPinMain.offsetTop - shift.y > coordinates.yMax + pinHeight / 2 + pointerHeight) {
-        mapPinMain.style.top = coordinates.yMax + pinHeight / 2 + pointerHeight + 'px';
-      }
-      if (mapPinMain.offsetLeft - shift.x < coordinates.xMin - pinWidth / 2) {
-        mapPinMain.style.left = coordinates.xMin - pinWidth / 2 + 'px';
-      }
-      if (mapPinMain.offsetLeft - shift.x > coordinates.xMax - pinWidth / 2) {
-        mapPinMain.style.left = coordinates.xMax - pinWidth / 2 + 'px';
-      }
+      checkBoundaries(shift);
     };
 
     var onMouseUp = function (upEvt) {
