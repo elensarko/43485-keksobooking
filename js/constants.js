@@ -18,6 +18,7 @@
       pointerWidth: 10,
       pointerHeight: 22
     },
+    NUMBER_OF_CARDS: 5,
     Dictionary: {
       palace: {
         translate: 'Дворец',

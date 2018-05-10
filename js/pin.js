@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var NUMBER_OF_CARDS = 5;
   var pinProportions = window.constants.PIN_PROPORTIONS;
   var mainPinElement = document.querySelector('.map__pin--main');
   var startMainPinPosition = mainPinElement.style.cssText;
@@ -40,7 +39,7 @@
     create: function (offers) {
       var fragment = document.createDocumentFragment();
 
-      offers.slice(0, NUMBER_OF_CARDS).forEach(function (offer) {
+      offers.slice(0, window.constants.NUMBER_OF_CARDS).forEach(function (offer) {
         fragment.appendChild(renderPin(offer));
       });
 
