@@ -31,11 +31,11 @@
 
   inputTitleElement.addEventListener('input', function (evt) {
     var target = evt.target;
-    // if (target.value.length < TITLE_LENGTH_MAX) {
-    //   target.setCustomValidity('Заголовок должен состоять минимум из 30-ти символов');
-    // } else {
-    //   target.setCustomValidity('');
-    // }
+    if (target.value.length < TITLE_LENGTH_MAX) {
+      target.setCustomValidity('Заголовок должен состоять минимум из 30-ти символов');
+    } else {
+      target.setCustomValidity('');
+    }
     target.setCustomValidity(target.value.length < TITLE_LENGTH_MAX ? 'Заголовок должен состоять минимум из 30-ти символов' : '');
   });
 

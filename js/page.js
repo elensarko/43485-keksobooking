@@ -5,6 +5,7 @@
   var fieldsetElements = document.querySelectorAll('fieldset');
   var mapElement = document.querySelector('.map');
   var mapPinMainElement = mapElement.querySelector('.map__pin--main');
+  var mapFiltersElement = mapElement.querySelector('.map__filters');
   var adForm = document.querySelector('.ad-form');
   var adFormResetElement = adForm.querySelector('.ad-form__reset');
 
@@ -36,6 +37,7 @@
 
       adFormResetElement.addEventListener('click', window.page.deactivate);
       mapPinMainElement.removeEventListener('mousedown', window.page.activate);
+      mapFiltersElement.addEventListener('change', window.filters.onChange);
     },
     deactivate: function () {
       window.form.reset();
@@ -53,6 +55,7 @@
 
       adFormResetElement.removeEventListener('click', window.page.deactivate);
       mapPinMainElement.addEventListener('mousedown', window.page.activate);
+      mapFiltersElement.removeEventListener('change', window.filters.onChange);
     }
   };
 })();

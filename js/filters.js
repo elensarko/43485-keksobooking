@@ -8,12 +8,6 @@
 
   var mapFiltersElement = document.querySelector('.map__filters');
 
-  mapFiltersElement.addEventListener('change', function () {
-    window.pin.remove();
-    window.card.closePopup();
-    window.filters.updatePins(window.data.OFFERS);
-  });
-
   var filterByValue = function (filteredOffers, element, property) {
     return filteredOffers.filter(function (offerData) {
       return offerData.offer[property].toString() === element.value;
@@ -69,8 +63,14 @@
     }
   };
 
+  var onChangeFilters = function () {
+    window.card.closePopup();
+    window.pin.remove();
+    updatePins(window.data.OFFERS);
+  };
+
   window.filters = {
-    updatePins: window.util.debounce(updatePins, 500)
+    onChange: window.util.debounce(onChangeFilters, 500)
   };
 
 })();
