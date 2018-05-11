@@ -105,7 +105,7 @@
 
   adFormElement.addEventListener('submit', function (evt) {
     window.backend.request('https://js.dump.academy/keksobooking', 'POST', function () {
-      reset();
+      adFormElement.reset();
       var successElement = document.querySelector('.success');
       successElement.classList.remove('hidden');
       setTimeout(function () {
@@ -133,7 +133,7 @@
     inputAddressElement.value = Math.floor(coordinatePinX) + ', ' + Math.floor(coordinatePinY);
   };
 
-  var reset = function () {
+  var onFormReset = function () {
     setTimeout(function () {
       changeSelectCapacity();
       changeInputPrice();
@@ -143,7 +143,7 @@
   };
 
   setAddressValues();
-  adFormElement.addEventListener('reset', reset);
+  adFormElement.addEventListener('reset', onFormReset);
 
   window.form = {
     setAddressValues: setAddressValues
