@@ -31,12 +31,9 @@
 
   inputTitleElement.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length < TITLE_LENGTH_MAX) {
-      target.setCustomValidity('Заголовок должен состоять минимум из 30-ти символов');
-    } else {
-      target.setCustomValidity('');
-    }
-    target.setCustomValidity(target.value.length < TITLE_LENGTH_MAX ? 'Заголовок должен состоять минимум из 30-ти символов' : '');
+    target.setCustomValidity(
+        target.value.length < TITLE_LENGTH_MAX ? 'Заголовок должен состоять минимум из 30-ти символов' : ''
+    );
   });
 
   var dictionary = window.constants.Dictionary;
@@ -78,8 +75,8 @@
   var selectTimeinElement = adFormElement.querySelector('select[name=timein]');
   var selectTimeoutElement = adFormElement.querySelector('select[name=timeout]');
 
-  var changeSelection = function (arr1, arr2) {
-    arr1.value = arr2.value;
+  var changeSelection = function (select1, select2) {
+    select1.value = select2.value;
   };
 
   selectTimeinElement.addEventListener('change', function () {
@@ -108,7 +105,7 @@
 
   adFormElement.addEventListener('submit', function (evt) {
     window.backend.request('https://js.dump.academy/keksobooking', 'POST', function () {
-      window.page.deactivate();
+      reset();
       var successElement = document.querySelector('.success');
       successElement.classList.remove('hidden');
       setTimeout(function () {
@@ -127,23 +124,30 @@
     evt.preventDefault();
   });
 
-  window.form = {
-    setAddressValues: function () {
-      var coordinatePinX = mapPinMainElement.offsetLeft + pinProportions.mainPinWidth / 2;
-      var coordinatePinY = mapPinMainElement.offsetTop;
-      if (mapElement.classList.contains('map--faded')) {
-        coordinatePinY += pinProportions.mainPinHeight / 2;
-      } else {
-        coordinatePinY += pinProportions.mainPinHeight + pinProportions.pointerHeight;
-      }
-      inputAddressElement.value = Math.floor(coordinatePinX) + ', ' + Math.floor(coordinatePinY);
-    },
-    reset: function () {
-      adFormElement.reset();
-      changeSelectCapacity();
-      window.form.setAddressValues();
-    }
+  var setAddressValues = function () {
+    var coordinatePinX = mapPinMainElement.offsetLeft + pinProportions.mainPinWidth / 2;
+    var coordinatePinY = mapPinMainElement.offsetTop;
+    coordinatePinY += mapElement.classList.contains('map--faded')
+      ? pinProportions.mainPinHeight / 2
+      : pinProportions.mainPinHeight + pinProportions.pointerHeight;
+    inputAddressElement.value = Math.floor(coordinatePinX) + ', ' + Math.floor(coordinatePinY);
   };
 
-  window.form.setAddressValues();
+  var reset = function () {
+    setTimeout(function () {
+      changeSelectCapacity();
+      changeInputPrice();
+      window.page.deactivate();
+      setAddressValues();
+    }, 0);
+  };
+
+  setAddressValues();
+  adFormElement.addEventListener('reset', reset);
+
+  window.form = {
+    setAddressValues: setAddressValues
+  };
+
+
 })();
