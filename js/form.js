@@ -16,6 +16,7 @@
   var inputAddressElement = document.querySelector('input[name=address]');
   var adFormElement = document.querySelector('.ad-form');
   var inputTitleElement = adFormElement.querySelector('input[name=title]');
+  var resetElement = adFormElement.querySelector('.ad-form__reset');
 
   inputTitleElement.addEventListener('invalid', function () {
     if (inputTitleElement.validity.tooShort) {
@@ -106,6 +107,7 @@
   adFormElement.addEventListener('submit', function (evt) {
     window.backend.request('https://js.dump.academy/keksobooking', 'POST', function () {
       adFormElement.reset();
+      onFormReset();
       var successElement = document.querySelector('.success');
       successElement.classList.remove('hidden');
       setTimeout(function () {
@@ -134,6 +136,13 @@
   };
 
   var onFormReset = function () {
+    // Событие "reset" эмитится формой перед фактическим обнулением полей.
+    // По условиям задания нельзя менять разметку,
+    // т.е. заменить type="reset" на type="button" невозможно.
+    // Для того чтобы сделать что-то ПОСЛЕ фактического ресета формы,
+    // мы переносим выполнение своего кода в следующий тик эвент-лупа.
+    // Разработчики со Stackoverflow советуют делать так же
+    // https://stackoverflow.com/a/21641295
     setTimeout(function () {
       changeSelectCapacity();
       changeInputPrice();

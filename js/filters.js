@@ -8,7 +8,7 @@
 
   var mapFiltersElement = document.querySelector('.map__filters');
   var selectorFilterElements = mapFiltersElement.querySelectorAll('select');
-  var featuresFilterElements = mapFiltersElement.querySelectorAll('input[type=checkbox]:checked');
+  var featuresFilterElements;
 
   var FilterRules = {
     'housing-type': 'type',
@@ -52,6 +52,8 @@
   };
 
   var updatePins = function (offers) {
+
+    featuresFilterElements = mapFiltersElement.querySelectorAll('input[type=checkbox]:checked');
 
     var filteredOffers = [];
     // Используем for и break для оптимизации количества прохода цикла
