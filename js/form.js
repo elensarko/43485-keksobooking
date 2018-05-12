@@ -16,7 +16,6 @@
   var inputAddressElement = document.querySelector('input[name=address]');
   var adFormElement = document.querySelector('.ad-form');
   var inputTitleElement = adFormElement.querySelector('input[name=title]');
-  var resetElement = adFormElement.querySelector('.ad-form__reset');
 
   inputTitleElement.addEventListener('invalid', function () {
     if (inputTitleElement.validity.tooShort) {
