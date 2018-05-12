@@ -3,6 +3,7 @@
 (function () {
   var mapElement = document.querySelector('.map');
   var mapPinMainElement = mapElement.querySelector('.map__pin--main');
+  var mapCardElement = mapElement.querySelector('.map__card');
 
   mapPinMainElement.addEventListener('mousedown', window.page.activate);
 
@@ -18,13 +19,13 @@
     if (typeof element.dataset.index === 'undefined') {
       return;
     }
-    mapElement.insertBefore(window.card.render(window.data.OFFERS[element.dataset.index]), mapElement.children[1]);
+    mapElement.insertBefore(window.card.render(window.data.OFFERS[element.dataset.index]), mapCardElement);
   });
 
   mapPinMainElement.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var startCoords = {
+    var startCoordinates = {
       x: evt.clientX,
       y: evt.clientY
     };
@@ -35,16 +36,16 @@
       var pinWidth = window.constants.PIN_PROPORTIONS.mainPinWidth;
       var pointerHeight = window.constants.PIN_PROPORTIONS.pointerHeight;
 
-      if (mapPinMainElement.offsetTop + shift.y + pinHeight + pointerHeight <= coordinates.yMin && shift.y < 0) {
+      if (shift.y < 0 && mapPinMainElement.offsetTop + shift.y + pinHeight + pointerHeight <= coordinates.yMin) {
         mapPinMainElement.style.top = coordinates.yMin - pinHeight - pointerHeight + 'px';
       }
-      if (mapPinMainElement.offsetTop + shift.y + pinHeight + pointerHeight >= coordinates.yMax && shift.y > 0) {
+      if (shift.y > 0 && mapPinMainElement.offsetTop + shift.y + pinHeight + pointerHeight >= coordinates.yMax) {
         mapPinMainElement.style.top = coordinates.yMax - pinHeight - pointerHeight + 'px';
       }
-      if (mapPinMainElement.offsetLeft + shift.x + pinWidth / 2 <= coordinates.xMin && shift.x < 0) {
+      if (shift.x < 0 && mapPinMainElement.offsetLeft + shift.x + pinWidth / 2 <= coordinates.xMin) {
         mapPinMainElement.style.left = coordinates.xMin - pinWidth / 2 + 'px';
       }
-      if (mapPinMainElement.offsetLeft + shift.x + pinWidth / 2 >= coordinates.xMax && shift.x > 0) {
+      if (shift.x > 0 && mapPinMainElement.offsetLeft + shift.x + pinWidth / 2 >= coordinates.xMax) {
         mapPinMainElement.style.left = coordinates.xMax - pinWidth / 2 + 'px';
       }
     };
@@ -53,11 +54,11 @@
       moveEvt.preventDefault();
 
       var shift = {
-        x: moveEvt.clientX - startCoords.x,
-        y: moveEvt.clientY - startCoords.y
+        x: moveEvt.clientX - startCoordinates.x,
+        y: moveEvt.clientY - startCoordinates.y
       };
 
-      startCoords = {
+      startCoordinates = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
